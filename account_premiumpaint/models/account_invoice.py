@@ -3,6 +3,12 @@ from base64 import b64decode, b64encode
 from odoo import api, fields, models
 
 
+class AccountMove(models.Model):
+    _inherit = "account.move"
+    @api.multi
+    def assert_balanced(self):
+        return True
+
 class AccountInvoice(models.Model):
     _inherit = "account.invoice"
 

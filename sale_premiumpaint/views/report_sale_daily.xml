@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <template id="report_saledaily">
+    <t t-call="web.html_container">
+      <t t-call="web.external_layout">
+        <div class="page">
+          <h2 class="text-center">Reporte Diario de Ventas</h2>
+
+          <div class="row mt32 mb32">
+            <div class="col-xs-3">
+              <strong>Fecha Impresion</strong>:<br/>
+              <t t-esc="datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')"/>
+            </div>
+            <div class="col-xs-3">
+              <strong>Reporte del dia</strong>:<br/>
+              <span t-esc="date_at"/>
+            </div>
+          </div>
+          <table class="table table-condensed">
+            <thead>
+              <tr>
+                <th>
+                  <strong>Tienda</strong>
+                </th>
+                <th class="text-right">
+                  <strong>Ventas</strong>
+                </th>
+                <th class="text-right">
+                  <strong>Contado</strong>
+                </th>
+                <th class="text-right">
+                  <strong>Credito</strong>
+                </th>
+                <th class="text-right">
+                  <strong>Costo</strong>
+                </th>
+                <th class="text-right">
+                  <strong>Utilidad</strong>
+                </th>
+                <th class="text-right">
+                  <strong>(%)Margen</strong>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <t t-set="sum_sales_total" t-value="0"/>
+              <t t-set="sum_sales_contado" t-value="0"/>
+              <t t-set="sum_sales_credito" t-value="0"/>
+              <t t-set="sum_sales_costo" t-value="0"/>
+              <t t-foreach="data" t-as="sale">
+                <t t-set="sum_sales_total" t-value="sum_sales_total + sale['amount_total']"/>
+                <t t-set="sum_sales_contado" t-value="sum_sales_contado + sale['Contado']"/>
+                <t t-set="sum_sales_credito" t-value="sum_sales_credito + sale['Credito']"/>
+                <t t-set="sum_sales_costo" t-value="sum_sales_costo + sale['amount_calculate_cost']"/>
+                
+                <t t-set="this_sale_utilidad" t-value="sale['amount_total'] - sale['amount_calculate_cost']"/>
+                <t t-set="this_sale_margen" t-value="(this_sale_utilidad / sale['amount_total']) * 100.0 if sale['amount_total'] else 0.0"/>
+                <tr>
+                  <td>
+                    <span t-esc="sale['warehouse_id'][1]"/>
+                  </td>
+                  <td class="text-right">
+                    <span t-esc="sale['amount_total']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                  </td>
+                  <td class="text-right">
+                    <span t-esc="sale['Contado']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                  </td>
+                  <td class="text-right">
+                    <span t-esc="sale['Credito']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                  </td>
+                  <td class="text-right">
+                    <span t-esc="sale['amount_calculate_cost']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                  </td>
+                  <td class="text-right">
+                    <span t-esc="this_sale_utilidad" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                  </td>
+                  <td class="text-right">
+                    <span t-esc="this_sale_margen" t-options="{'widget': 'float', 'precision': 2}"/>
+                  </td>
+                </tr>
+              </t>
+              <t t-set="all_sale_utilidad" t-value="sum_sales_total - sum_sales_costo"/>
+                <t t-set="all_sale_margen" t-value="(all_sale_utilidad / sum_sales_total) * 100.0 if sum_sales_total else 0.0"/>
+              <tr>
+                <td><strong>Total :</strong></td>
+                <td class="text-right"><span t-esc="sum_sales_total" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+                <td class="text-right"><span t-esc="sum_sales_contado" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+                <td class="text-right"><span t-esc="sum_sales_credito" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+                <td class="text-right"><span t-esc="sum_sales_costo" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+                <td class="text-right"><span t-esc="all_sale_utilidad" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+                <td class="text-right"><span t-esc="all_sale_margen" t-options="{'widget': 'float', 'precision': 2}"/></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="page">
+          <h2 class="text-center">Reporte Consolidado de Ventas</h2>
+          <table class="table table-condensed">
+            <thead>
+              <tr>
+                <th>
+                  <strong>Tienda</strong>
+                </th>
+                <th class="text-right">
+                  <strong>Ventas</strong>
+                </th>
+                <th class="text-right">
+                  <strong>Contado</strong>
+                </th>
+                <th class="text-right">
+                  <strong>Credito</strong>
+                </th>
+                <th class="text-right">
+                  <strong>Costo</strong>
+                </th>
+                <th class="text-right">
+                  <strong>Utilidad</strong>
+                </th>
+                <th class="text-right">
+                  <strong>(%)Margen</strong>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <t t-set="sum_sales_total" t-value="0"/>
+              <t t-set="sum_sales_contado" t-value="0"/>
+              <t t-set="sum_sales_credito" t-value="0"/>
+              <t t-set="sum_sales_costo" t-value="0"/>
+              <t t-foreach="get_report_consolidate(date_at)" t-as="sale">
+                <t t-set="sum_sales_total" t-value="sum_sales_total + sale['amount_total']"/>
+                <t t-set="sum_sales_contado" t-value="sum_sales_contado + sale['Contado']"/>
+                <t t-set="sum_sales_credito" t-value="sum_sales_credito + sale['Credito']"/>
+                <t t-set="sum_sales_costo" t-value="sum_sales_costo + sale['amount_calculate_cost']"/>
+                
+                <t t-set="this_sale_utilidad" t-value="sale['amount_total'] - sale['amount_calculate_cost']"/>
+                <t t-set="this_sale_margen" t-value="(this_sale_utilidad / sale['amount_total']) * 100.0 if sale['amount_total'] else 0.0"/>
+                <tr>
+                  <td>
+                    <span t-esc="sale['warehouse_id'][1]"/>
+                  </td>
+                  <td class="text-right">
+                    <span t-esc="sale['amount_total']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                  </td>
+                  <td class="text-right">
+                    <span t-esc="sale['Contado']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                  </td>
+                  <td class="text-right">
+                    <span t-esc="sale['Credito']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                  </td>
+                  <td class="text-right">
+                    <span t-esc="sale['amount_calculate_cost']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                  </td>
+                  <td class="text-right">
+                    <span t-esc="this_sale_utilidad" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                  </td>
+                  <td class="text-right">
+                    <span t-esc="this_sale_margen" t-options="{'widget': 'float', 'precision': 2}"/>
+                  </td>
+                </tr>
+              </t>
+              <t t-set="all_sale_utilidad" t-value="sum_sales_total - sum_sales_costo"/>
+                <t t-set="all_sale_margen" t-value="(all_sale_utilidad / sum_sales_total) * 100.0 if sum_sales_total else 0.0"/>
+              <tr>
+                <td><strong>Total :</strong></td>
+                <td class="text-right"><span t-esc="sum_sales_total" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+                <td class="text-right"><span t-esc="sum_sales_contado" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+                <td class="text-right"><span t-esc="sum_sales_credito" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+                <td class="text-right"><span t-esc="sum_sales_costo" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+                <td class="text-right"><span t-esc="all_sale_utilidad" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+                <td class="text-right"><span t-esc="all_sale_margen" t-options="{'widget': 'float', 'precision': 2}"/></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </t>
+    </t>
+  </template>
+  <report
+            id="action_report_saledaily"
+            model="sale.daily.report"
+            string="Reporte diario Ventas"
+            report_type="qweb-pdf"
+            name="sale_premiumpaint.report_saledaily"
+            file="sale_premiumpaint.report_saledaily"
+            />
+</odoo>
+

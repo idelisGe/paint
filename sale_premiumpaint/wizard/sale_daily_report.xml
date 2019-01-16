@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_sale_daily_report" model="ir.ui.view">
+    <field name="name">Reporte diario de ventas</field>
+    <field name="model">sale.daily.report</field>
+    <field name="arch" type="xml">
+      <form string="Selecciona una opcion">
+        <group>
+          <group>
+            <field name="compute_at_date" widget="radio"/>
+            <field name="date" attrs="{'invisible': [('compute_at_date', '=', 0)]}"/>
+          </group>
+        </group>
+        <footer>
+          <button name="open_report" string="Reporte PDF" type="object" class="btn-primary"/>
+          <button string="Cancel" class="btn-default" special="cancel" />
+        </footer>
+      </form>
+    </field>
+  </record>
+  <record id="action_sale_daily_report" model="ir.actions.act_window">
+    <field name="name">Report diario de ventas</field>
+    <field name="res_model">sale.daily.report</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">form</field>
+    <field name="view_id" ref="view_sale_daily_report"/>
+    <field name="target">new</field>
+    <field name="context">{'default_compute_at_date': 0}</field>
+  </record>
+  <menuitem id="menu_sale_daily_report" name="Reporte diario de Ventas" parent="sale.menu_sale_report" sequence="100" action="action_sale_daily_report"/>
+</odoo>
+
