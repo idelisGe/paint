@@ -47,4 +47,23 @@ class ReportSaleDaily(models.AbstractModel):
             'date_at': wiz_date,
             'get_report_consolidate': self.get_report_consolidate,
         }
-        return data
+
+class ReportSaleUser(models.AbstractModel):
+
+    _name = 'report.sale_premiumpaint.report_saleuser'
+
+    @api.multi
+    def get_report_user(self, data={}, payment_type='Contado'):
+        start_date = data.get('start_date', False) or fields.Date.context_today(self)
+        end_date = data.get('end_date', False) or fields.Date.context_today(self)
+        user_id = data.get('user_id', False) and data.get('user_id', False)[0]
+        domain = [('confirmation_date','>=', start_date),('confirmation_date','<=', end_date),('payment_type','=', payment_type),('user_id','=', user_id),('state','in',('sale','done'))]
+        return self.env['sale.order'].search(domain)
+
+    @api.multi
+    def get_report_values(self, docids, data=None):
+        data = dict(data or {})
+        return {
+            'data': data.get('form', {}),
+            'get_report_user': self.get_report_user
+        }
