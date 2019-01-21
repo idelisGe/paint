@@ -17,6 +17,7 @@
 
     'data': [
         'views/sales_team_view.xml',
+        'views/sale_views.xml',
         'views/report_sale_daily.xml',
         'wizard/sale_daily_report.xml',
         'wizard/sale_user_report.xml',
