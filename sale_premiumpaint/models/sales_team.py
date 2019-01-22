@@ -45,4 +45,15 @@ class CrmTeam(models.Model):
     _inherit = 'crm.team'
 
     warehouse_id = fields.Many2one('stock.warehouse', 'Warehouse')
+
+
+class SaleAdvancePaymentInv(models.TransientModel):
+    _inherit = "sale.advance.payment.inv"
+
+    @api.multi
+    def _create_invoice(self, order, so_line, amount):
+        print ("_create_invoice")
+        invoice = super(SaleAdvancePaymentInv, self)._create_invoice(order, so_line, amount)
+        invoice.write({'payment_type': order.payment_type})
+        return invoice
  

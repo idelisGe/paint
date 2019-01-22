@@ -1,0 +1,14 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_insurable_interest_user,insurable.interest.user,model_insurable_interest,sales_team.group_sale_salesman,1,1,1,1
+access_interest_vehicle_type_user,interest.vehicle.type.user,model_interest_vehicle_type,sales_team.group_sale_salesman,1,1,0,0
+access_interest_vehicle_brand_user,interest.vehicle.brand.user,model_interest_vehicle_brand,sales_team.group_sale_salesman,1,1,1,1
+access_interest_vehicle_model_user,interest.vehicle.model.user,model_interest_vehicle_model,sales_team.group_sale_salesman,1,1,1,1
+access_interest_vehicle_yeard_user,interest.vehicle.yeard.user,model_interest_vehicle_yeard,sales_team.group_sale_salesman,1,1,1,1
+access_interest_health_plan_user,interest.health.plan.user,model_interest_health_plan,sales_team.group_sale_salesman,1,1,1,1
+access_insurable_interest_line_user,insurable.interest.line.user,model_insurable_interest_line,sales_team.group_sale_salesman,1,1,1,1
+access_interest_vehicle_type_manager,interest.vehicle.type.manager,model_interest_vehicle_type,sales_team.group_sale_manager,1,1,1,1
+access_interest_machinery_brand_user,interest.machinery.brand.user,model_interest_machinery_brand,sales_team.group_sale_salesman,1,1,1,1
+access_interest_machinery_model_user,interest.machinery.model.user,model_interest_machinery_model,sales_team.group_sale_salesman,1,1,1,1
+access_interest_equipment_brand_user,interest.equipment.brand.user,model_interest_equipment_brand,sales_team.group_sale_salesman,1,1,1,1
+access_interest_equipment_model_user,interest.equipment.model.user,model_interest_equipment_model,sales_team.group_sale_salesman,1,1,1,1
+access_financial_entity_model_user,financial.entity.model.user,model_financial_entity,sales_team.group_sale_salesman,1,1,1,1

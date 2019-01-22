@@ -6,6 +6,7 @@ from odoo import api, fields, models
 class AccountInvoice(models.Model):
     _inherit = "account.invoice"
 
+    payment_type = fields.Char('Es Credito')
     fiscal_printer_status = fields.Selection([
             ('unsent','Sin enviar'),
             ('sent','Enviada'),
