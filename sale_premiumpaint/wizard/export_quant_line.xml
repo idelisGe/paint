@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="wizard_quant_valuation_export" model="ir.ui.view">
+            <field name="name">Quant Valuation Export</field>
+            <field name="model">quant.valuation.export</field>
+            <field name="arch" type="xml">
+                <form string="Quant Valuation Export">
+                    <div states="choose">
+                      <field invisible="1" name="state"/>
+                    </div>
+                    <group states="choose" string="Export Valuación">
+                    </group>
+                    <div states="get">
+                        <h2>Archivo generado</h2>
+                        <p>Descargar aqui: <field name="data" readonly="1" filename="name"/></p>
+                    </div>
+                    <footer states="choose">
+                        <button name="act_getfile" string="Export" type="object" class="btn-primary" default_focus="1"/>
+                        <button special="cancel" string="Cancel" type="object" class="btn-default"/>
+                    </footer>
+                    <footer states="get">
+                        <button special="cancel" string="Close" type="object" class="btn-primary" default_focus="1"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_wizard_quant_valuation_export" model="ir.actions.act_window">
+            <field name="name">Valoración de Inventario</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">quant.valuation.export</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        <menuitem action="action_wizard_quant_valuation_export" id="stock_account.menu_valuation" sequence="110" parent="stock.menu_warehouse_report"/>
+    </data>
+</odoo>

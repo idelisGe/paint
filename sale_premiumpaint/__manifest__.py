@@ -21,6 +21,7 @@
         'views/report_sale_daily.xml',
         'wizard/sale_daily_report.xml',
         'wizard/sale_user_report.xml',
+        'wizard/export_quant_line.xml',
     ],
 
     'installable': True,

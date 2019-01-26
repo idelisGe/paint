@@ -3,3 +3,4 @@
 
 from . import sale_daily_report
 from . import sale_user_report
+from . import export_quant_line
