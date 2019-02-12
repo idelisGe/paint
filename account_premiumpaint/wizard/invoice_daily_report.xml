@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-  <record id="view_sale_daily_report" model="ir.ui.view">
-    <field name="name">Reporte diario de ventas</field>
-    <field name="model">sale.daily.report</field>
+  <record id="view_invoice_daily_report" model="ir.ui.view">
+    <field name="name">Reporte diario de Facturas</field>
+    <field name="model">invoice.daily.report</field>
     <field name="arch" type="xml">
       <form string="Selecciona una opcion">
         <group>
@@ -18,15 +18,16 @@
       </form>
     </field>
   </record>
-  <!--record id="action_sale_daily_report" model="ir.actions.act_window">
-    <field name="name">Report diario de ventas</field>
-    <field name="res_model">sale.daily.report</field>
+  <record id="action_invoice_daily_report" model="ir.actions.act_window">
+    <field name="name">Report diario de Facturas</field>
+    <field name="res_model">invoice.daily.report</field>
     <field name="view_type">form</field>
     <field name="view_mode">form</field>
-    <field name="view_id" ref="view_sale_daily_report"/>
+    <field name="view_id" ref="view_invoice_daily_report"/>
     <field name="target">new</field>
     <field name="context">{'default_compute_at_date': 0}</field>
   </record>
-  <menuitem id="menu_sale_daily_report" name="Reporte diario de Ventas" parent="sale.menu_sale_report" sequence="100" action="action_sale_daily_report"/-->
+  <menuitem id="account_reports_premiumpaint_menu" name="Premiumpaint" parent="account.menu_finance_reports" sequence="100" groups="account.group_account_user"/>
+  <menuitem id="menu_invoice_daily_report" name="Reporte diario de Facturas" parent="account_reports_premiumpaint_menu" sequence="100" action="action_invoice_daily_report"/>
 </odoo>
 

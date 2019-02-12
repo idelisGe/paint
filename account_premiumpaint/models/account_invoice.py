@@ -6,7 +6,27 @@ from odoo import api, fields, models
 class AccountInvoice(models.Model):
     _inherit = "account.invoice"
 
-    payment_type = fields.Char('Es Credito')
+    @api.depends('origin','payment_term_id')
+    def _compute_related_sale_order(self):
+        for invoice in self:
+            origin = invoice.origin and invoice.origin.split(',')
+            payment_type = False
+            if origin and len(origin):
+                sale_order = self.env['sale.order'].search([('name','=',origin[0])], limit=1)
+                invoice.payment_type = sale_order.payment_type if sale_order else False
+                invoice.warehouse_id = sale_order.warehouse_id if sale_order else False
+                invoice.amount_calculate_cost = sale_order.amount_calculate_cost if sale_order else 0.0
+            if not payment_type:
+                invoice_pt_id = invoice.payment_term_id.id if invoice.payment_term_id else False
+                immediate_pt = self.env.ref('account.account_payment_term_immediate')
+                immediate_pt_id = immediate_pt.id if immediate_pt else False
+                invoice.payment_type = 'Contado' if invoice_pt_id in (immediate_pt_id, False) else 'Credito'
+
+    payment_type = fields.Char(
+        'Es Credito', compute='_compute_related_sale_order', store=True)
+    warehouse_id = fields.Many2one(
+        'stock.warehouse', string='Warehouse', compute='_compute_related_sale_order', store=True)
+    amount_calculate_cost = fields.Monetary(string='Costo', compute='_compute_related_sale_order', store=True)
     fiscal_printer_status = fields.Selection([
             ('unsent','Sin enviar'),
             ('sent','Enviada'),

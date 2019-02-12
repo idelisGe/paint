@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_invoice_user_report_wizard" model="ir.ui.view">
+    <field name="name">invoice.user.report.wizard.form</field>
+    <field name="model">invoice.user.report</field>
+    <field name="arch" type="xml">
+      <form string="Facturas por Vendedor">
+        <group>
+          <field name="start_date"/>
+          <field name="end_date"/>
+        </group>
+        <group>
+          <field name="user_id" domain="[('sale_team_id','!=',False)]"/>
+        </group>
+        <footer>
+          <button name="generate_report" string="Imprimir" type="object" class="btn-primary"/>
+          <button string="Cancelar" class="btn-default" special="cancel" />
+        </footer>
+      </form>
+    </field>
+  </record>
+  <record id="action_invoice_user_report_action" model="ir.actions.act_window">
+    <field name="name">Facturas por Vendedor</field>
+    <field name="res_model">invoice.user.report</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">form</field>
+    <field name="view_id" ref="view_invoice_user_report_wizard"/>
+    <field name="target">new</field>
+  </record>
+  <menuitem id="menu_invoice_user_report" name="Facturas por Vendedor" parent="account_premiumpaint.account_reports_premiumpaint_menu" sequence="101" action="action_invoice_user_report_action"/>
+</odoo>
+

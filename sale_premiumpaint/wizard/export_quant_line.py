@@ -64,6 +64,8 @@ class QuantValuationExport(models.TransientModel):
             worksheet.write(0,col + 1,'Valor',header_bold)
 
             row = 1
+            col = 1
+            total_value = 0.0
             for qr in quant_result:
                 cell_num = xlwt.easyxf(num_format_str="#,##0.00")
                 worksheet.write(row,0,qr['product_id'])
@@ -73,7 +75,11 @@ class QuantValuationExport(models.TransientModel):
                     col += 1
                 worksheet.write(row,col,qr['quantity'],cell_num)
                 worksheet.write(row,col + 1,qr['inventory_value'],cell_num)
+                total_value += qr['inventory_value']
                 row += 1
+            cell_num = xlwt.easyxf("font: bold on; pattern: pattern solid, fore_colour gray25;", num_format_str="#,##0.00")
+            worksheet.write(row,col,"Total:",cell_num)
+            worksheet.write(row,col + 1,total_value,cell_num)
 
             workbook.save(buf)
             out = base64.encodestring(buf.getvalue())
