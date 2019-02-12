@@ -23,9 +23,10 @@ class SaleOrder(models.Model):
     @api.depends('payment_term_id')
     def _compute_payment_type(self):
         for sale in self:
-            sale_pt = sale.payment_term_id
+            sale_pt_id = sale.payment_term_id.id if sale.payment_term_id else False
             immediate_pt = self.env.ref('account.account_payment_term_immediate')
-            sale.payment_type = 'Contado' if invoice_pt in (immediate_pt, False) else 'Credito'
+            immediate_pt_id = immediate_pt.id if immediate_pt else False
+            sale.payment_type = 'Contado' if sale_pt_id in (immediate_pt_id, False) else 'Credito'
 
     @api.model
     def _default_warehouse_id(self):
