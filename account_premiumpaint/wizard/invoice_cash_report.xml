@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-  <record id="view_invoice_daily_report" model="ir.ui.view">
-    <field name="name">Reporte diario de Facturas</field>
-    <field name="model">invoice.daily.report</field>
+  <record id="view_invoice_cash_report" model="ir.ui.view">
+    <field name="name">Informe diario de Caja</field>
+    <field name="model">invoice.cash.report</field>
     <field name="arch" type="xml">
       <form string="Selecciona una opcion">
         <group>
           <group>
             <field name="compute_at_date" widget="radio"/>
             <field name="date" attrs="{'invisible': [('compute_at_date', '=', 0)]}"/>
+            <field name="user_id" domain="[('sale_team_id','!=',False)]"/>
           </group>
         </group>
         <footer>
@@ -18,16 +19,16 @@
       </form>
     </field>
   </record>
-  <record id="action_invoice_daily_report" model="ir.actions.act_window">
-    <field name="name">Report diario de Facturas</field>
-    <field name="res_model">invoice.daily.report</field>
+  <record id="action_invoice_cash_report" model="ir.actions.act_window">
+    <field name="name">Informe diario de Caja</field>
+    <field name="res_model">invoice.cash.report</field>
     <field name="view_type">form</field>
     <field name="view_mode">form</field>
-    <field name="view_id" ref="view_invoice_daily_report"/>
+    <field name="view_id" ref="view_invoice_cash_report"/>
     <field name="target">new</field>
     <field name="context">{'default_compute_at_date': 0}</field>
   </record>
-
-  <menuitem id="menu_invoice_daily_report" name="Reporte diario de Facturas" parent="account_reports_premiumpaint_menu" sequence="100" action="action_invoice_daily_report"/>
+  
+  <menuitem id="menu_invoice_cash_report" name="Informe de Caja diario" parent="account_premiumpaint_pdf_report_menu" sequence="110" action="action_invoice_cash_report"/>
 </odoo>
 

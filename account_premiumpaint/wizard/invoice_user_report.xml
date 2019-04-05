@@ -27,6 +27,6 @@
     <field name="view_id" ref="view_invoice_user_report_wizard"/>
     <field name="target">new</field>
   </record>
-  <menuitem id="menu_invoice_user_report" name="Facturas por Vendedor" parent="account_premiumpaint.account_reports_premiumpaint_menu" sequence="101" action="action_invoice_user_report_action"/>
+  <menuitem id="menu_invoice_user_report" name="Facturas por Vendedor" parent="account_reports_premiumpaint_menu" sequence="101" action="action_invoice_user_report_action"/>
 </odoo>
 

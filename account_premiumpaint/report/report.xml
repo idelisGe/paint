@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <report
+            id="action_report_invoicedaily"
+            model="invoice.daily.report"
+            string="Reporte diario Facturas"
+            report_type="qweb-pdf"
+            name="account_premiumpaint.report_invoicedaily"
+            file="account_premiumpaint.report_invoicedaily"
+            />
+
+  <report
+            id="action_report_invoiceuser"
+            model="invoice.user.report"
+            string="Facturas por vendedor"
+            report_type="qweb-pdf"
+            name="account_premiumpaint.report_invoiceuser"
+            file="account_premiumpaint.report_invoiceuser"
+            />
+
+  <report
+            id="action_report_invoicecash"
+            model="invoice.cash.report"
+            string="Reporte de Caja"
+            report_type="qweb-pdf"
+            name="account_premiumpaint.report_invoicecash"
+            file="account_premiumpaint.report_invoicecash"
+            />
+
+</odoo>
+

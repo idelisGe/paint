@@ -1,5 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+
+  <menuitem
+    id="account_premiumpaint_menu"
+    name="Premiumpaint"
+    parent="account.menu_finance"
+    sequence="50"
+    groups="account.group_account_invoice"/>
+
+  <menuitem
+    id="account_reports_premiumpaint_menu"
+    name="Premiumpaint"
+    parent="account.menu_finance_reports"
+    sequence="100"
+    groups="account.group_account_user"/>
+
+  <menuitem
+    id="account_premiumpaint_pdf_report_menu"
+    name="Reportes PDF"
+    parent="account_premiumpaint_menu"
+    sequence="50"
+    groups="account.group_account_invoice"/>
+
+  <record id="account_payment_subtype_view_form" model="ir.ui.view">
+    <field name="name">account.payment.subtype.form</field>
+    <field name="model">account.payment.subtype</field>
+    <field name="arch" type="xml">
+      <form string="Payment Subtypes">
+        <sheet>
+          <div class="oe_title">
+            <label for="name" class="oe_edit_only"/>
+            <h1><field name="name" placeholder="e.g. EFECTIVO"/></h1>
+          </div>
+          <group col="2">
+            <field name="journal_id" class="oe_inline"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="account_payment_subtype_view_tree" model="ir.ui.view">
+    <field name="name">account.payment.subtype.tree</field>
+    <field name="model">account.payment.subtype</field>
+    <field name="arch" type="xml">
+      <tree string="Payment Subtypes">
+        <field name="name" string="Nombre"/>
+        <field name="journal_id" string="Diario"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="account_payment_subtype_action" model="ir.actions.act_window">
+    <field name="name">Payment Subtypes</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">account.payment.subtype</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+    <!--field name="context" eval="{'search_default_filter_to_availabe_pos': 1}"/-->
+  </record>
+
+  <menuitem id="finance_configuration_premiumpaint_menu"
+      name="Premiumpaint"
+      parent="account.menu_finance_configuration"
+      sequence="100" groups="account.group_account_user"/>
+
+  <menuitem id="account_payment_subtype_menu"
+      action="account_payment_subtype_action"
+      parent="finance_configuration_premiumpaint_menu"
+      groups="account.group_account_user"
+      sequence="20"/>
+
   <!-- Update account invoice !-->
   <record id="account_invoice_form" model="ir.ui.view">
     <field name="name">Account Invoice</field>
@@ -27,7 +98,7 @@
     <field name="url">http://127.0.0.1:8080/sendcmd/STBa</field>
   </record>
 
-  <menuitem id="account_reports_fiscal_printer_menu" name="Impresora Fiscal" parent="account.menu_finance" sequence="50" groups="account.group_account_invoice"/>
+  <menuitem id="account_reports_fiscal_printer_menu" name="Impresora Fiscal" parent="account_premiumpaint_menu" sequence="50" groups="account.group_account_invoice"/>
   <menuitem id="account_reports_x_fiscal_printer_action" name="Reporte X" action="action_send_x_report" parent="account_reports_fiscal_printer_menu" sequence="1"/>
   <menuitem id="account_reports_z_fiscal_printer_action" name="Reporte Z" action="action_send_y_report" parent="account_reports_fiscal_printer_menu" sequence="2"/>
 </odoo>
