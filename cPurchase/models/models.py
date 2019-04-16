@@ -14,6 +14,7 @@
 from openerp import models, fields, api
 from openerp.tools.translate import _
 from odoo import exceptions
+from openerp.osv.orm import except_orm
 
 class PurchaseOrder(models.Model):
     """
@@ -22,8 +23,7 @@ class PurchaseOrder(models.Model):
     """
     _inherit = 'purchase.order'
 
-    user_department_id = fields.Many2one('hr.department', store=True,
-                                         compute='_compute_user_department')
+    user_department_id = fields.Many2one('hr.department', readonly=True)
     state = fields.Selection([('draft', 'RFQ'),
                               ('sent', 'RFQ Sent'),
                               ('to approve', 'To Approve'),
@@ -34,8 +34,22 @@ class PurchaseOrder(models.Model):
                              string='Status', readonly=True,
                              index=True, copy=False,
                              default='draft', track_visibility='onchange')
+    @api.model
+    def create(self, vals):
+        ''' Is necessary redefine for find the department who belong the
+        logged user an store in the user_department field.
 
-    @api.multi
+        '''
+        logged_empl = self.env['hr.employee'].search([
+            ('user_id', '=', self.env.user.login)])
+        if logged_empl.department_id:
+            vals['user_department_id'] = logged_empl.department_id.id
+        else:
+            raise exceptions.ValidationError(
+                _('Please select a Department for the logged user.'))
+        return super(PurchaseOrder,self).create(vals)
+
+    @api.model
     def action_view_invoice(self):
         '''Is needed redefine for avoid that the user can create a bill
         without a department manager approved.
@@ -47,7 +61,7 @@ class PurchaseOrder(models.Model):
             raise exceptions.ValidationError(_('"Error"\
             Please aprove the purchase first..'))
 
-    @api.multi
+    @api.model
     def aprove_purchase(self):
         ''' Confirm the purchase.
         Also check if the logged user have the needed access for confirm a
@@ -76,6 +90,7 @@ class PurchaseOrder(models.Model):
         else:
             self.build_invoice()
 
+    @api.model
     def build_invoice(self):
         ''''This method will build an invoice using the purchase fields and
         related with the PO.
@@ -133,17 +148,6 @@ class PurchaseOrder(models.Model):
             'context': { }
         }
 
-    @api.multi
-    @api.depends('partner_id')
-    def _compute_user_department(self):
-        ''' Define if the logged user have an assigned department and store
-        it in the purchase order for filter later using the created user
-        rules.
-
-        '''
-        for record in self:
-            if record.user_id.employee_ids.department_id:
-                record.user_department_id = record.user_id.employee_ids.department_id.id
 
 
 class HrDeparment(models.Model):
