@@ -24,8 +24,6 @@ class PurchaseOrder(models.Model):
 
     user_department_id = fields.Many2one('hr.department', store=True,
                                          compute='_compute_user_department')
-    manager_loged_user = fields.Boolean(store=True, compute='_is_manager_user',
-                                        default=True)
     state = fields.Selection([('draft', 'RFQ'),
                               ('sent', 'RFQ Sent'),
                               ('to approve', 'To Approve'),
@@ -135,10 +133,7 @@ class PurchaseOrder(models.Model):
             'context': { }
         }
 
-    @api.depends('state', 'partner_id')
-    def _is_manager_user(self):
-        self.manager_loged_user = False
-
+    @api.multi
     @api.depends('partner_id')
     def _compute_user_department(self):
         ''' Define if the logged user have an assigned department and store
@@ -146,8 +141,9 @@ class PurchaseOrder(models.Model):
         rules.
 
         '''
-        if self.user_id.employee_ids.department_id:
-            self.user_department_id = self.user_id.employee_ids.department_id.id
+        for record in self:
+            if record.user_id.employee_ids.department_id:
+                record.user_department_id = record.user_id.employee_ids.department_id.id
 
 
 class HrDeparment(models.Model):
