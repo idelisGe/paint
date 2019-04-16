@@ -133,7 +133,7 @@ class PurchaseOrder(models.Model):
             'context': { }
         }
 
-    @api.multi
+    @api.one
     @api.depends('partner_id')
     def _compute_user_department(self):
         ''' Define if the logged user have an assigned department and store
