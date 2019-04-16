@@ -141,9 +141,8 @@ class PurchaseOrder(models.Model):
         rules.
 
         '''
-        for record in self:
-            if record.user_id.employee_ids.department_id:
-                record.user_department_id = record.user_id.employee_ids.department_id.id
+        if self.user_id.employee_ids.department_id:
+            self.user_department_id = self.user_id.employee_ids.department_id.id
 
 
 class HrDeparment(models.Model):
